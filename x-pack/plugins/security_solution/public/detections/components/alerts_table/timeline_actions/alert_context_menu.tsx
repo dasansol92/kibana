@@ -47,7 +47,7 @@ import { ExceptionListType } from '../../../../../common/shared_imports';
 import { AlertData, EcsHit } from '../../../../common/components/exceptions/types';
 import { useQueryAlerts } from '../../../containers/detection_engine/alerts/use_query';
 import { useSignalIndex } from '../../../containers/detection_engine/alerts/use_signal_index';
-
+import { EventFilterModal } from '../../../../management/pages/event_filter/view/components/event_filter_modal';
 interface AlertContextMenuProps {
   ariaLabel?: string;
   disabled: boolean;
@@ -313,6 +313,11 @@ const AlertContextMenuComponent: React.FC<AlertContextMenuProps> = ({
     setOpenAddExceptionModal('endpoint');
   }, [closePopover]);
 
+  const handleFilterEventClick = useCallback((): void => {
+    closePopover();
+    setOpenAddExceptionModal('events');
+  }, [closePopover]);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const addEndpointExceptionComponent = (
     <EuiContextMenuItem
@@ -348,6 +353,21 @@ const AlertContextMenuComponent: React.FC<AlertContextMenuProps> = ({
     </EuiContextMenuItem>
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const filterEventComponent = (
+    <EuiContextMenuItem
+      key="filter-event-menu-item"
+      aria-label="Filter event"
+      data-test-subj="filter-event-menu-item"
+      id="filterEvent"
+      onClick={handleFilterEventClick}
+    >
+      <EuiText data-test-subj="filterEventButton" size="m">
+        {'Filter event'}
+      </EuiText>
+    </EuiContextMenuItem>
+  );
+
   const statusFilters = useMemo(() => {
     if (!alertStatus) {
       return [];
@@ -371,8 +391,13 @@ const AlertContextMenuComponent: React.FC<AlertContextMenuProps> = ({
   ]);
 
   const items = useMemo(
-    () => [...statusFilters, addEndpointExceptionComponent, addExceptionComponent],
-    [addEndpointExceptionComponent, addExceptionComponent, statusFilters]
+    () => [
+      ...statusFilters,
+      addEndpointExceptionComponent,
+      addExceptionComponent,
+      filterEventComponent,
+    ],
+    [addEndpointExceptionComponent, addExceptionComponent, statusFilters, filterEventComponent]
   );
 
   return (
@@ -392,17 +417,31 @@ const AlertContextMenuComponent: React.FC<AlertContextMenuProps> = ({
           </EuiPopover>
         </EventsTdContent>
       </div>
-      {exceptionModalType != null && ruleId != null && ecsRowData != null && (
-        <AddExceptionModalWrapper
+      {exceptionModalType != null &&
+        exceptionModalType !== 'events' &&
+        ruleId != null &&
+        ecsRowData != null && (
+          <AddExceptionModalWrapper
+            ruleName={ruleName}
+            ruleId={ruleId}
+            ruleIndices={ruleIndices}
+            exceptionListType={exceptionModalType}
+            ecsData={ecsRowData}
+            onCancel={onAddExceptionCancel}
+            onConfirm={onAddExceptionConfirm}
+            alertStatus={alertStatus}
+            onRuleChange={onRuleChange}
+          />
+        )}
+      {exceptionModalType != null && exceptionModalType === 'events' && ecsRowData != null && (
+        <EventFilterModal
           ruleName={ruleName}
-          ruleId={ruleId}
+          ruleId={'events_rule'}
           ruleIndices={ruleIndices}
           exceptionListType={exceptionModalType}
-          ecsData={ecsRowData}
+          alertData={ecsRowData as AlertData}
           onCancel={onAddExceptionCancel}
-          onConfirm={onAddExceptionConfirm}
-          alertStatus={alertStatus}
-          onRuleChange={onRuleChange}
+          onConfirm={closePopover}
         />
       )}
     </>
