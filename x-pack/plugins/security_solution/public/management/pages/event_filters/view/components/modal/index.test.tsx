@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { createGlobalNoMiddlewareStore, ecsEventMock } from '../../../test_utils';
 import { getMockTheme } from '../../../../../../common/lib/kibana/kibana_react.mock';
-import { MODAL_TITLE, MODAL_SUBTITLE, ACTIONS_CONFIRM, ACTIONS_CANCEL } from './translations';
+import { MODAL_TITLE, ACTIONS_CONFIRM, ACTIONS_CANCEL } from './translations';
 import type {
   CreateExceptionListItemSchema,
   ExceptionListItemSchema,
@@ -61,7 +61,6 @@ describe('Event filter modal', () => {
   it('should renders correctly', () => {
     component = renderForm();
     expect(component.getAllByText(MODAL_TITLE)).not.toBeNull();
-    expect(component.getByText(MODAL_SUBTITLE)).not.toBeNull();
     expect(component.getAllByText(ACTIONS_CONFIRM)).not.toBeNull();
     expect(component.getByText(ACTIONS_CANCEL)).not.toBeNull();
   });

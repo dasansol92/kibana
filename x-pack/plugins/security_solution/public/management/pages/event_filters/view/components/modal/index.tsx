@@ -27,7 +27,7 @@ import {
   isCreationSuccessful,
 } from '../../../store/selector';
 import { getInitialExceptionFromEvent } from '../../../store/utils';
-import { MODAL_TITLE, MODAL_SUBTITLE, ACTIONS_CONFIRM, ACTIONS_CANCEL } from './translations';
+import { MODAL_TITLE, ACTIONS_CONFIRM, ACTIONS_CANCEL } from './translations';
 
 export interface EventFiltersModalProps {
   data: Ecs;
@@ -44,12 +44,6 @@ const Modal = styled(EuiModal)`
 const ModalHeader = styled(EuiModalHeader)`
   flex-direction: column;
   align-items: flex-start;
-`;
-
-const ModalHeaderSubtitle = styled.div`
-  ${({ theme }) => css`
-    color: ${theme.eui.euiColorMediumShade};
-  `}
 `;
 
 const ModalBodySection = styled.section`
@@ -113,7 +107,6 @@ export const EventFiltersModal: React.FC<EventFiltersModalProps> = memo(({ data,
     <Modal onClose={handleOnCancel} data-test-subj="add-exception-modal">
       <ModalHeader>
         <EuiModalHeaderTitle>{MODAL_TITLE}</EuiModalHeaderTitle>
-        <ModalHeaderSubtitle>{MODAL_SUBTITLE}</ModalHeaderSubtitle>
       </ModalHeader>
 
       <ModalBodySection>
