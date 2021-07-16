@@ -18,6 +18,8 @@ describe('Activity Log', () => {
       cleanKibana();
 
       esArchiverLoad('policies');
+      esArchiverLoad('policies_saved_objects');
+      esArchiverLoad('endpoint_integration_saved_objects');
       esArchiverLoad('agents');
       esArchiverLoad('metadata');
 
@@ -26,6 +28,8 @@ describe('Activity Log', () => {
 
     after(() => {
       esArchiverUnload('policies');
+      esArchiverUnload('policies_saved_objects');
+      esArchiverUnload('endpoint_integration_saved_objects');
       esArchiverUnload('metadata');
       esArchiverUnload('agents');
     });
