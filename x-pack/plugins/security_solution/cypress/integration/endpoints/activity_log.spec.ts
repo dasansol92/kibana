@@ -30,12 +30,20 @@ describe('Activity Log', () => {
       esArchiverUnload('policies');
       esArchiverUnload('policies_saved_objects');
       esArchiverUnload('endpoint_integration_saved_objects');
-      esArchiverUnload('metadata');
       esArchiverUnload('agents');
+      esArchiverUnload('metadata');
     });
 
     it('displays the endpoints list', () => {
       cy.get(LIST_PAGE_TITLE).should('have.text', 'Endpoints');
+      cy.get('[data-test-subj="hostnameCellLink"]').click();
+      cy.get('[data-test-subj="activity_log"]').click();
+    });
+
+    it('displays the endpoints list 2', () => {
+      cy.get(LIST_PAGE_TITLE).should('have.text', 'Endpoints');
+      cy.get('[data-test-subj="hostnameCellLink"]').click();
+      cy.get('[data-test-subj="activity_log"]').click();
     });
   });
 });
