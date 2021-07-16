@@ -16,17 +16,18 @@ describe('Activity Log', () => {
   context('Rendered', () => {
     before(() => {
       cleanKibana();
-      loginAndWaitForPage(ENDPOINTS_URL);
 
       esArchiverLoad('policies');
-      esArchiverLoad('metadata');
       esArchiverLoad('agents');
+      esArchiverLoad('metadata');
+
+      loginAndWaitForPage(ENDPOINTS_URL);
     });
 
     after(() => {
-      // esArchiverUnload('policies');
-      // esArchiverUnload('metadata');
-      // esArchiverUnload('agents');
+      esArchiverUnload('policies');
+      esArchiverUnload('metadata');
+      esArchiverUnload('agents');
     });
 
     it('displays the endpoints list', () => {
